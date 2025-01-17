@@ -1,4 +1,5 @@
-﻿using Application.Interface;
+﻿using Application.DTO;
+using Application.Interface;
 using Domain;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -20,51 +21,50 @@ namespace Infra.Service
             _certificado = new X509Certificate2(certificadoCaminho, certificadoSenha);
         }
 
-        public async Task<EnvelopeBody> ConsultarGtinAsync(string gtin)
+        public async Task<ResponseDefault<EnvelopeBody>> ConsultarGtinAsync(string gtin)
         {
-            using (var handler = new HttpClientHandler())
+            try
             {
-                handler.ClientCertificates.Add(_certificado);
-                using (var client = new HttpClient(handler))
+                using (var handler = new HttpClientHandler())
                 {
-                    string envelope =
-                        "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                        "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns=\"http://www.portalfiscal.inf.br/nfe/wsdl/ccgConsGtin\">" +
-                        "<soap:Header/>" +
-                        "<soap:Body>" +
-                        "<ccgConsGTIN>" +
-                        "<nfeDadosMsg>" +
-                        "<consGTIN xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"1.00\">" +
-                        $"<GTIN>{gtin}</GTIN>" +
-                        "</consGTIN>" +
-                        "</nfeDadosMsg>" +
-                        "</ccgConsGTIN>" +
-                        "</soap:Body>" +
-                        "</soap:Envelope>";
-
-                    var content = new StringContent(envelope, Encoding.UTF8, "text/xml");
-                    content.Headers.Add("SOAPAction", _soapAction);
-
-                    HttpResponseMessage response = await client.PostAsync(_url, content);
-                    response.EnsureSuccessStatusCode();
-
-                    string result = await response.Content.ReadAsStringAsync();
-
-                    var envelopeResponse = DeserializeEnvelope(result);
-                    if (envelopeResponse?.Body == null || envelopeResponse.Body.ccgConsGTINResponse == null)
+                    handler.ClientCertificates.Add(_certificado);
+                    using (var client = new HttpClient(handler))
                     {
-                        throw new Exception("O XML de resposta não possui a estrutura esperada.");
+                        string envelope = "<xml completo aqui>";
+                        var content = new StringContent(envelope, Encoding.UTF8, "text/xml");
+                        content.Headers.Add("SOAPAction", _soapAction);
+
+                        HttpResponseMessage response = await client.PostAsync(_url, content);
+                        response.EnsureSuccessStatusCode();
+
+                        string result = await response.Content.ReadAsStringAsync();
+                        var envelopeResponse = DeserializeEnvelope(result);
+                        
+                        return new ResponseDefault<EnvelopeBody>(true, "OK", envelopeResponse.Dados.Body);
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                return new ResponseDefault<EnvelopeBody>(false, $"Erro{ex.Message}", null);
+            }
         }
 
-        private static Envelope DeserializeEnvelope(string content)
+        private static ResponseDefault<Envelope>DeserializeEnvelope(string content)
         {
-            var serializer = new XmlSerializer(typeof(Envelope));
-            using (var reader = new StringReader(content))
+            try
             {
-                return (Envelope)serializer.Deserialize(reader);
+                var serializer = new XmlSerializer(typeof(Envelope));
+                using (var reader = new StringReader(content))
+                {
+                    var data = (Envelope)serializer.Deserialize(reader);
+
+                    return new ResponseDefault<Envelope>(true, "OK", data);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseDefault<Envelope>(false, $"Erro:{ex.Message}", null);
             }
         }
     }

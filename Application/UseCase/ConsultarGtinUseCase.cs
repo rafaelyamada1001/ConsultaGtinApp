@@ -1,4 +1,5 @@
-﻿using Application.Interface;
+﻿using Application.DTO;
+using Application.Interface;
 using Domain;
 
 namespace Application.UseCase
@@ -12,7 +13,7 @@ namespace Application.UseCase
             _consGtinService = consGtinService;
         }
 
-        public async Task<EnvelopeBody?> ExecutarAsync(string gtin)
+        public async Task<ResponseDefault<EnvelopeBody>> ExecutarAsync(string gtin)
         {
             return await _consGtinService.ConsultarGtinAsync(gtin);
         }
