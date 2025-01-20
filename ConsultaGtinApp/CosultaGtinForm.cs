@@ -1,14 +1,15 @@
 using Application.UseCase;
 using Domain;
 using Infra.Service;
+using System.Text;
 
 namespace ConsultaGtinApp
 {
-    public partial class Form1 : Form
+    public partial class CosultaGtinForm : Form
     {
         private readonly ConsultarGtinUseCase _consultarGtinUseCase;
         private readonly List<GtinResult> _lista;
-        public Form1()
+        public CosultaGtinForm()
         {
             string url = "https://dfe-servico.svrs.rs.gov.br/ws/ccgConsGTIN/ccgConsGTIN.asmx";
             string soapAction = "http://www.portalfiscal.inf.br/nfe/wsdl/ccgConsGtin/ccgConsGTIN";
@@ -67,7 +68,7 @@ namespace ConsultaGtinApp
                             await ConsultarGtinAsync(gtin);
                         }
 
-                        MessageBox.Show("Importação e consulta finalizadas com sucesso!");
+                        MessageBox.Show("Importação e consulta finalizadas com sucesso!","Sucesso!");
                     }
                     catch (Exception ex)
                     {
@@ -80,9 +81,22 @@ namespace ConsultaGtinApp
         {
             var result = await _consultarGtinUseCase.ExecutarAsync(gtin);
 
+            var ret = result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN;
+
             if (result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN != null)
             {
-                var ret = result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN;
+
+                if (_lista.Any(item => item.GTIN == gtin))
+                {
+                    MessageBox.Show($"O GTIN: {gtin} já está na lista.","Erro",MessageBoxButtons.OK ,MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN.xProd == null)
+                {
+                    MessageBox.Show($"GTIN:{ret.GTIN} \n{ret.xMotivo}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 var gtinResult = new GtinResult
                 {
@@ -100,7 +114,31 @@ namespace ConsultaGtinApp
             }
             else
             {
-                MessageBox.Show($"GTIN {gtin} inválido ou não encontrado.");
+                MessageBox.Show($"GTIN {gtin} inválido ou não encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnExportarCSV_Click(object sender, EventArgs e)
+        {
+            string diretorio = "C:\\Arquivos CSV";
+            try
+            {
+                string nomeArquivo = $"dados_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
+                string caminhoArquivo = Path.Combine(diretorio, nomeArquivo);
+
+                StringBuilder sb = new StringBuilder();
+
+                sb.AppendLine("GTIN; Produto; NCM; CEST; Mesagem");
+                foreach (var linha in _lista)
+                {
+                    sb.AppendLine($"{linha.GTIN};{linha.Produto};{linha.NCM};{linha.CEST};{linha.Mensagem}");
+                }
+                File.WriteAllText(caminhoArquivo, sb.ToString());
+                MessageBox.Show("Exportação concluída com sucesso!","Sucesso!", MessageBoxButtons.OK);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Falha ao tentar exportar{ex.Message}","Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

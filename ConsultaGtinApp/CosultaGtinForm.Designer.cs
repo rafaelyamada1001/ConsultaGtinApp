@@ -1,6 +1,6 @@
 ﻿namespace ConsultaGtinApp
 {
-    partial class Form1
+    partial class CosultaGtinForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CosultaGtinForm));
             dgvConsultaGtin = new DataGridView();
             Descricao = new DataGridViewTextBoxColumn();
             Gtin = new DataGridViewTextBoxColumn();
@@ -41,6 +41,7 @@
             pnlConsultaGtin = new Panel();
             btnImportCSV = new Button();
             txtConsultaGtin = new TextBox();
+            btnExportarCSV = new Button();
             pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dgvConsultaGtin).BeginInit();
             pnlConsultaGtin.SuspendLayout();
@@ -56,7 +57,7 @@
             dgvConsultaGtin.Location = new Point(12, 179);
             dgvConsultaGtin.Name = "dgvConsultaGtin";
             dgvConsultaGtin.ReadOnly = true;
-            dgvConsultaGtin.Size = new Size(902, 259);
+            dgvConsultaGtin.Size = new Size(810, 259);
             dgvConsultaGtin.TabIndex = 0;
             // 
             // Descricao
@@ -155,28 +156,39 @@
             txtConsultaGtin.Size = new Size(217, 23);
             txtConsultaGtin.TabIndex = 3;
             // 
+            // btnExportarCSV
+            // 
+            btnExportarCSV.Location = new Point(727, 453);
+            btnExportarCSV.Name = "btnExportarCSV";
+            btnExportarCSV.Size = new Size(95, 27);
+            btnExportarCSV.TabIndex = 5;
+            btnExportarCSV.Text = "Exportar CSV";
+            btnExportarCSV.UseVisualStyleBackColor = true;
+            btnExportarCSV.Click += btnExportarCSV_Click;
+            // 
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(647, -1);
+            pictureBox1.Location = new Point(557, 1);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(196, 159);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 4;
             pictureBox1.TabStop = false;
             // 
-            // Form1
+            // CosultaGtinForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(926, 450);
+            ClientSize = new Size(834, 492);
+            Controls.Add(btnExportarCSV);
             Controls.Add(pictureBox1);
             Controls.Add(pnlConsultaGtin);
             Controls.Add(dgvConsultaGtin);
             MaximizeBox = false;
-            Name = "Form1";
+            Name = "CosultaGtinForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Form1";
+            Text = "Consultar Gtin";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)dgvConsultaGtin).EndInit();
             pnlConsultaGtin.ResumeLayout(false);
@@ -199,5 +211,6 @@
         private DataGridViewTextBoxColumn Cest;
         private DataGridViewTextBoxColumn Ncm;
         private DataGridViewTextBoxColumn Mensagem;
+        private Button btnExportarCSV;
     }
 }
