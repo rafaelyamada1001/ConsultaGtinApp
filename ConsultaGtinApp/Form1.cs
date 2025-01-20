@@ -54,14 +54,10 @@ namespace ConsultaGtinApp
                         GTIN = ret.GTIN.ToString(),
                         Produto = ret.xProd,
                         NCM = ret.NCM.ToString(),
-                        CEST = ret.CEST.ToString(),
-                        Status = $"{ret.cStat} - {ret.xMotivo}",
+                        CEST = ret.CEST.ToString(),                        
                     };
 
-                    // Adiciona o resultado na lista
                     _lista.Add(gtinResult);
-
-                    //dgvConsultaGtin.Rows.Add(gtinResult.GTIN, gtinResult.Produto, gtinResult.NCM);
 
                     dgvConsultaGtin.DataSource = _lista.ToList();
                     dgvConsultaGtin.Refresh();
