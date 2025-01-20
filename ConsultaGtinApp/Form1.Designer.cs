@@ -35,9 +35,11 @@
             Gtin = new DataGridViewTextBoxColumn();
             Cest = new DataGridViewTextBoxColumn();
             Ncm = new DataGridViewTextBoxColumn();
+            Mensagem = new DataGridViewTextBoxColumn();
             btnConsultaGtin = new Button();
             lblConsultaGtin = new Label();
             pnlConsultaGtin = new Panel();
+            btnImportCSV = new Button();
             txtConsultaGtin = new TextBox();
             pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dgvConsultaGtin).BeginInit();
@@ -50,52 +52,65 @@
             dgvConsultaGtin.AllowUserToAddRows = false;
             dgvConsultaGtin.AllowUserToDeleteRows = false;
             dgvConsultaGtin.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvConsultaGtin.Columns.AddRange(new DataGridViewColumn[] { Descricao, Gtin, Cest, Ncm });
+            dgvConsultaGtin.Columns.AddRange(new DataGridViewColumn[] { Descricao, Gtin, Cest, Ncm, Mensagem });
             dgvConsultaGtin.Location = new Point(12, 179);
             dgvConsultaGtin.Name = "dgvConsultaGtin";
             dgvConsultaGtin.ReadOnly = true;
-            dgvConsultaGtin.Size = new Size(776, 259);
+            dgvConsultaGtin.Size = new Size(902, 259);
             dgvConsultaGtin.TabIndex = 0;
             // 
             // Descricao
             // 
-            Descricao.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Descricao.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             Descricao.DataPropertyName = "Produto";
             Descricao.HeaderText = "Descrição";
             Descricao.Name = "Descricao";
             Descricao.ReadOnly = true;
+            Descricao.Width = 83;
             // 
             // Gtin
             // 
-            Gtin.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Gtin.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             Gtin.DataPropertyName = "GTIN";
             Gtin.HeaderText = "GTIN";
             Gtin.Name = "Gtin";
             Gtin.ReadOnly = true;
+            Gtin.Width = 58;
             // 
             // Cest
             // 
-            Cest.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Cest.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             Cest.DataPropertyName = "CEST";
             Cest.HeaderText = "CEST";
             Cest.Name = "Cest";
             Cest.ReadOnly = true;
+            Cest.Width = 58;
             // 
             // Ncm
             // 
-            Ncm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Ncm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             Ncm.DataPropertyName = "NCM";
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
             Ncm.DefaultCellStyle = dataGridViewCellStyle1;
             Ncm.HeaderText = "NCM";
             Ncm.Name = "Ncm";
             Ncm.ReadOnly = true;
+            Ncm.Width = 60;
+            // 
+            // Mensagem
+            // 
+            Mensagem.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Mensagem.DataPropertyName = "Mensagem";
+            Mensagem.HeaderText = "Mensagem";
+            Mensagem.Name = "Mensagem";
+            Mensagem.ReadOnly = true;
+            Mensagem.Width = 91;
             // 
             // btnConsultaGtin
             // 
             btnConsultaGtin.Location = new Point(241, 54);
             btnConsultaGtin.Name = "btnConsultaGtin";
-            btnConsultaGtin.Size = new Size(75, 23);
+            btnConsultaGtin.Size = new Size(95, 23);
             btnConsultaGtin.TabIndex = 1;
             btnConsultaGtin.Text = "Consultar";
             btnConsultaGtin.UseVisualStyleBackColor = true;
@@ -114,13 +129,24 @@
             // pnlConsultaGtin
             // 
             pnlConsultaGtin.BorderStyle = BorderStyle.FixedSingle;
+            pnlConsultaGtin.Controls.Add(btnImportCSV);
             pnlConsultaGtin.Controls.Add(txtConsultaGtin);
             pnlConsultaGtin.Controls.Add(lblConsultaGtin);
             pnlConsultaGtin.Controls.Add(btnConsultaGtin);
             pnlConsultaGtin.Location = new Point(15, 14);
             pnlConsultaGtin.Name = "pnlConsultaGtin";
-            pnlConsultaGtin.Size = new Size(493, 132);
+            pnlConsultaGtin.Size = new Size(519, 132);
             pnlConsultaGtin.TabIndex = 3;
+            // 
+            // btnImportCSV
+            // 
+            btnImportCSV.Location = new Point(342, 54);
+            btnImportCSV.Name = "btnImportCSV";
+            btnImportCSV.Size = new Size(95, 23);
+            btnImportCSV.TabIndex = 4;
+            btnImportCSV.Text = "Importar CSV";
+            btnImportCSV.UseVisualStyleBackColor = true;
+            btnImportCSV.Click += btnImportCSV_Click;
             // 
             // txtConsultaGtin
             // 
@@ -132,7 +158,7 @@
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(558, 0);
+            pictureBox1.Location = new Point(647, -1);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(196, 159);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -143,7 +169,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(926, 450);
             Controls.Add(pictureBox1);
             Controls.Add(pnlConsultaGtin);
             Controls.Add(dgvConsultaGtin);
@@ -167,9 +193,11 @@
         private Panel pnlConsultaGtin;
         private TextBox txtConsultaGtin;
         private PictureBox pictureBox1;
+        private Button btnImportCSV;
         private DataGridViewTextBoxColumn Descricao;
         private DataGridViewTextBoxColumn Gtin;
         private DataGridViewTextBoxColumn Cest;
         private DataGridViewTextBoxColumn Ncm;
+        private DataGridViewTextBoxColumn Mensagem;
     }
 }

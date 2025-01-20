@@ -1,7 +1,6 @@
 using Application.UseCase;
 using Domain;
 using Infra.Service;
-using System.Windows.Forms;
 
 namespace ConsultaGtinApp
 {
@@ -42,30 +41,7 @@ namespace ConsultaGtinApp
             {
                 string gtin = txtConsultaGtin.Text;
 
-                
-                var result = await _consultarGtinUseCase.ExecutarAsync(gtin);
-
-                if (result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN != null)
-                {
-                    var ret = result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN;
-
-                    var gtinResult = new GtinResult
-                    {
-                        GTIN = ret.GTIN.ToString(),
-                        Produto = ret.xProd,
-                        NCM = ret.NCM.ToString(),
-                        CEST = ret.CEST.ToString(),                        
-                    };
-
-                    _lista.Add(gtinResult);
-
-                    dgvConsultaGtin.DataSource = _lista.ToList();
-                    dgvConsultaGtin.Refresh();
-                }
-                else
-                {
-                    MessageBox.Show("Erro ao processar a resposta ou GTIN inválido.");
-                }
+                await ConsultarGtinAsync(gtin);
             }
             catch (Exception ex)
             {
@@ -73,6 +49,59 @@ namespace ConsultaGtinApp
             }
         }
 
+        private async void btnImportCSV_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Arquivos CSV (*.csv)|*.csv";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        var linhas = File.ReadAllLines(openFileDialog.FileName);
+                        var gtins = new List<string>(linhas);
+
+                        foreach (var gtin in gtins)
+                        {
+                            await ConsultarGtinAsync(gtin);
+                        }
+
+                        MessageBox.Show("Importação e consulta finalizadas com sucesso!");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erro ao importar o arquivo: {ex.Message}");
+                    }
+                }
+            }
+        }
+        private async Task ConsultarGtinAsync(string gtin)
+        {
+            var result = await _consultarGtinUseCase.ExecutarAsync(gtin);
+
+            if (result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN != null)
+            {
+                var ret = result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN;
+
+                var gtinResult = new GtinResult
+                {
+                    GTIN = ret.GTIN.ToString(),
+                    Produto = ret.xProd,
+                    NCM = ret.NCM.ToString(),
+                    CEST = ret.CEST.ToString(),
+                    Mensagem = ret.xMotivo,
+                };
+
+                _lista.Add(gtinResult);
+
+                dgvConsultaGtin.DataSource = null;
+                dgvConsultaGtin.DataSource = _lista;
+            }
+            else
+            {
+                MessageBox.Show($"GTIN {gtin} inválido ou não encontrado.");
+            }
+        }
     }
-    
 }
