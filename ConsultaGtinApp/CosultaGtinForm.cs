@@ -88,13 +88,13 @@ namespace ConsultaGtinApp
 
                 if (_lista.Any(item => item.GTIN == gtin))
                 {
-                    MessageBox.Show($"O GTIN: {gtin} já está na lista.","Erro",MessageBoxButtons.OK ,MessageBoxIcon.Warning);
+                    //MessageBox.Show($"O GTIN: {gtin} já está na lista.","Erro",MessageBoxButtons.OK ,MessageBoxIcon.Warning);
                     return;
                 }
 
                 if (result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN.xProd == null)
                 {
-                    MessageBox.Show($"GTIN:{ret.GTIN} \n{ret.xMotivo}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //MessageBox.Show($"GTIN:{ret.GTIN} \n{ret.xMotivo}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -114,7 +114,8 @@ namespace ConsultaGtinApp
             }
             else
             {
-                MessageBox.Show($"GTIN {gtin} inválido ou não encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //MessageBox.Show($"GTIN {gtin} inválido ou não encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
         }
 
