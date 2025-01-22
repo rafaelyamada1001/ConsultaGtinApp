@@ -60,62 +60,17 @@ namespace ConsultaGtinApp
                 {
                     try
                     {
-                        var linhas = File.ReadAllLines(openFileDialog.FileName);
-                        var gtins = new List<string>(linhas);
+                        var gtins = File.ReadAllLines(openFileDialog.FileName);
 
-                        foreach (var gtin in gtins)
-                        {
-                            await ConsultarGtinAsync(gtin);
-                        }
+                        await ConsultarListaGtinAsync(gtins, maxSimultaneousTasks: 5);
 
-                        MessageBox.Show("Importação e consulta finalizadas com sucesso!","Sucesso!");
+                        MessageBox.Show("Importação e consulta finalizadas com sucesso!", "Sucesso!");
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show($"Erro ao importar o arquivo: {ex.Message}");
                     }
                 }
-            }
-        }
-        private async Task ConsultarGtinAsync(string gtin)
-        {
-            var result = await _consultarGtinUseCase.ExecutarAsync(gtin);
-
-            var ret = result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN;
-
-            if (result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN != null)
-            {
-
-                if (_lista.Any(item => item.GTIN == gtin))
-                {
-                    //MessageBox.Show($"O GTIN: {gtin} já está na lista.","Erro",MessageBoxButtons.OK ,MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN.xProd == null)
-                {
-                    //MessageBox.Show($"GTIN:{ret.GTIN} \n{ret.xMotivo}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                var gtinResult = new GtinResult
-                {
-                    GTIN = ret.GTIN.ToString(),
-                    Produto = ret.xProd,
-                    NCM = ret.NCM.ToString(),
-                    CEST = ret.CEST.ToString(),
-                    Mensagem = ret.xMotivo,
-                };
-
-                _lista.Add(gtinResult);
-
-                dgvConsultaGtin.DataSource = null;
-                dgvConsultaGtin.DataSource = _lista;
-            }
-            else
-            {
-                //MessageBox.Show($"GTIN {gtin} inválido ou não encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
             }
         }
 
@@ -128,19 +83,82 @@ namespace ConsultaGtinApp
                 string caminhoArquivo = Path.Combine(diretorio, nomeArquivo);
 
                 StringBuilder sb = new StringBuilder();
-
                 sb.AppendLine("GTIN; Produto; NCM; CEST; Mesagem");
                 foreach (var linha in _lista)
                 {
                     sb.AppendLine($"{linha.GTIN};{linha.Produto};{linha.NCM};{linha.CEST};{linha.Mensagem}");
                 }
                 File.WriteAllText(caminhoArquivo, sb.ToString());
-                MessageBox.Show("Exportação concluída com sucesso!","Sucesso!", MessageBoxButtons.OK);
+                MessageBox.Show("Exportação concluída com sucesso!", "Sucesso!", MessageBoxButtons.OK);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Falha ao tentar exportar{ex.Message}","Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"Falha ao tentar exportar{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private async Task ConsultarGtinAsync(string gtin)
+        {
+            try
+            {
+                var result = await _consultarGtinUseCase.ExecutarAsync(gtin);
+                var ret = result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN;
+
+                if (ret != null && !_lista.Any(item => item.GTIN == gtin))
+                {
+                    if (result.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN.xProd == null) return;
+ 
+                    var gtinResult = new GtinResult
+                    {
+                        GTIN = ret.GTIN.ToString(),
+                        Produto = ret.xProd,
+                        NCM = ret.NCM.ToString() ?? string.Empty,
+                        CEST = ret.CEST.ToString() ?? string.Empty,
+                        Mensagem = ret.xMotivo,
+                    };
+
+                    _lista.Add(gtinResult);
+
+                    Invoke((MethodInvoker)(() =>
+                    {
+                        dgvConsultaGtin.DataSource = null;
+                        dgvConsultaGtin.DataSource = _lista;
+                    }));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro na consulta GTIN {gtin}: {ex.Message}");
+            }
+        }
+
+        private async Task ConsultarListaGtinAsync(IEnumerable<string> gtins, int maxSimultaneousTasks = 5)
+        {
+            var semaphore = new SemaphoreSlim(maxSimultaneousTasks); 
+            var tasks = new List<Task>();
+
+            foreach (var gtin in gtins)
+            {
+                await semaphore.WaitAsync();
+
+                tasks.Add(Task.Run(async () =>
+                {
+                    try
+                    {
+                        await ConsultarGtinAsync(gtin);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Erro ao consultar GTIN {gtin}: {ex.Message}");
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                }));
+            }
+
+            await Task.WhenAll(tasks);
         }
     }
 }
