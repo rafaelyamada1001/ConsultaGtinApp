@@ -1,22 +1,47 @@
 ﻿using Application.DTO;
-using Application.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain;
 
 namespace Application.UseCase
 {
     public class ConsultarListaGtinUseCase
     {
-        private readonly IConsGtinService _service;
+        private readonly ConsultarGtinUseCase _consultarGtinUseCase;
+ 
 
-        public ConsultarListaGtinUseCase(IConsGtinService service)
+        public ConsultarListaGtinUseCase(ConsultarGtinUseCase consultarGtinUseCase)
         {
-            _service = service;
-        }
-       
+            _consultarGtinUseCase = consultarGtinUseCase;
 
+        }
+        public async Task<List<ResponseDefault<retConsGTIN>>> Execute(IEnumerable<string> gtins, int maxSimultaneousTasks = 5)
+        {
+            var semaphore = new SemaphoreSlim(maxSimultaneousTasks);
+            var tasks = new List<Task<ResponseDefault<retConsGTIN>>>();
+
+            foreach (var gtin in gtins)
+            {
+                await semaphore.WaitAsync();
+
+                tasks.Add(Task.Run(async () =>
+                {
+                    try
+                    {
+                        return await _consultarGtinUseCase.Execute(gtin);
+                    }
+                    catch (Exception ex)
+                    {
+                        return new ResponseDefault<retConsGTIN>(false, $"Erro ao consultar GTIN {gtin}: {ex.Message}", null);
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                }));
+            }
+
+            var results = await Task.WhenAll(tasks);
+
+            return results.ToList();
+        }
     }
 }
