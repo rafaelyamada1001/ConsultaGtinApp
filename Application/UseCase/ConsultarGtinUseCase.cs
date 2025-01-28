@@ -17,7 +17,7 @@ namespace Application.UseCase
 
         public async Task<ResponseDefault<retConsGTIN>> Execute(string gtin)
         {
-            if (_gtinsConsultados.Contains(gtin))
+            if (_gtinsConsultados.Contains(gtin.TrimStart('0')))
             {
                 return new ResponseDefault<retConsGTIN>(false, "GTIN já foi consultado", null);
             }
