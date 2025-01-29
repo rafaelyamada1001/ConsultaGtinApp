@@ -26,7 +26,7 @@ namespace Application.UseCase
                 {
                     try
                     {
-                        return await _consultarGtinUseCase.Execute(gtin);
+                        return await _consultarGtinUseCase.ExecuteAsync(gtin);
                     }
                     catch (Exception ex)
                     {

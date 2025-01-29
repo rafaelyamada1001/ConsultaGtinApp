@@ -15,7 +15,7 @@ namespace Application.UseCase
             _gtinsConsultados = new List<string>();
         }
 
-        public async Task<ResponseDefault<retConsGTIN>> Execute(string gtin)
+        public async Task<ResponseDefault<retConsGTIN>> ExecuteAsync(string gtin)
         {
             if (_gtinsConsultados.Contains(gtin.TrimStart('0')))
             {
@@ -29,7 +29,24 @@ namespace Application.UseCase
             var ret = response.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN;
             if (ret.xProd == null) return new ResponseDefault<retConsGTIN>(false, $" Insira um GTIN válido \n{ret.xMotivo}", null);
 
-            else return new ResponseDefault<retConsGTIN>(true, "Ok", ret);
+            return new ResponseDefault<retConsGTIN>(true, "Ok", ret);
+        }
+
+        public async Task<GtinResult> ExecuteIIAsync(string gtin)
+        {
+            var response = await _consGtinService.ConsultarGtinAsync(gtin);
+            if (!response.Sucesso) return null;
+
+            var ret = response.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN;
+
+            return new GtinResult
+            {
+                Produto = ret.xProd,
+                NCM = ret.NCM,
+                CEST = ret.CEST,
+                GTIN = ret.GTIN,
+                Mensagem = ret.xMotivo
+            };
         }
     }
 }

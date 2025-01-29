@@ -1,6 +1,6 @@
 ﻿namespace ConsultaGtinApp
 {
-    partial class CosultaGtinForm
+    partial class ConsultaGtinForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CosultaGtinForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConsultaGtinForm));
             dgvConsultaGtin = new DataGridView();
             Descricao = new DataGridViewTextBoxColumn();
             Gtin = new DataGridViewTextBoxColumn();

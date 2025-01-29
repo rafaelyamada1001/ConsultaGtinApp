@@ -105,21 +105,21 @@
 
         private string verAplicField;
 
-        private ushort cStatField;
+        private string cStatField;
 
         private string xMotivoField;
 
         private DateTime dhRespField;
 
-        private ulong gTINField;
+        private string gTINField;
 
-        private byte tpGTINField;
+        private string tpGTINField;
 
         private string xProdField;
 
-        private uint nCMField;
+        private string nCMField;
 
-        private uint cESTField;
+        private string cESTField;
 
         private decimal versaoField;
 
@@ -137,7 +137,7 @@
         }
 
         /// <remarks/>
-        public ushort cStat
+        public string cStat
         {
             get
             {
@@ -176,7 +176,7 @@
         }
 
         /// <remarks/>
-        public ulong GTIN
+        public string GTIN
         {
             get
             {
@@ -189,7 +189,7 @@
         }
 
         /// <remarks/>
-        public byte tpGTIN
+        public string tpGTIN
         {
             get
             {
@@ -215,7 +215,7 @@
         }
 
         /// <remarks/>
-        public uint NCM
+        public string NCM
         {
             get
             {
@@ -228,7 +228,7 @@
         }
 
         /// <remarks/>
-        public uint CEST
+        public string CEST
         {
             get
             {

@@ -3,9 +3,9 @@ using Domain;
 
 namespace Application.UseCase
 {
-    public class GtinResultProcessor
+    public class ProcessarGtinUseCase
     {
-        public GtinResult Processar(ResponseDefault<retConsGTIN> response)
+        public GtinResult Execute(ResponseDefault<retConsGTIN> response)
         {
             return new GtinResult
             {
