@@ -29,7 +29,7 @@ namespace Application.UseCase
 
             var results = await Task.WhenAll(tasks);
 
-            return results.Where(r => r.Produto != null).ToList();
+            return results.Where(r => r != null).ToList();
         }
     }
 }

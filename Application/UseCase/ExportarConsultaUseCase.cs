@@ -12,9 +12,9 @@ namespace Application.UseCase
             this.criarArquivoServico = criarArquivoServico;
         }
 
-        public void Executar(List<GtinResult> lista, string diretorio)
+        public async Task ExecutarAsync(List<GtinResult> lista, string diretorio)
         {
-            criarArquivoServico.CriarCsv(lista, diretorio);
+            await criarArquivoServico.CriarCsvAsync(lista, diretorio);
         }
     }
 }

@@ -5,6 +5,6 @@ namespace Application.Interface
 {
     public interface ICriarArquivoServico
     {
-        void CriarCsv(List<GtinResult> conteudo, string diretorio);
+        Task CriarCsvAsync(List<GtinResult> conteudo, string diretorio);
     }
 }

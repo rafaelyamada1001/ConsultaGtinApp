@@ -1,12 +1,11 @@
-﻿
-using Application.Interface;
+﻿using Application.Interface;
 using Domain;
 
 namespace Infra.Service
 {
     public class ArquivoService : ICriarArquivoServico
     {
-        public void CriarCsv(List<GtinResult> conteudo, string diretorio)
+        public async Task CriarCsvAsync(List<GtinResult> conteudo, string diretorio)
         {
             try
             {

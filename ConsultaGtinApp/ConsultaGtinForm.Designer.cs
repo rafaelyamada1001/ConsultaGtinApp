@@ -42,6 +42,7 @@
             Gtin = new DataGridViewTextBoxColumn();
             Cest = new DataGridViewTextBoxColumn();
             Ncm = new DataGridViewTextBoxColumn();
+            Column1 = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvConsultaGtin).BeginInit();
             pnlConsultaGtin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -52,7 +53,7 @@
             dgvConsultaGtin.AllowUserToAddRows = false;
             dgvConsultaGtin.AllowUserToDeleteRows = false;
             dgvConsultaGtin.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvConsultaGtin.Columns.AddRange(new DataGridViewColumn[] { Descricao, Gtin, Cest, Ncm });
+            dgvConsultaGtin.Columns.AddRange(new DataGridViewColumn[] { Descricao, Gtin, Cest, Ncm, Column1 });
             dgvConsultaGtin.Location = new Point(12, 179);
             dgvConsultaGtin.Name = "dgvConsultaGtin";
             dgvConsultaGtin.ReadOnly = true;
@@ -167,6 +168,15 @@
             Ncm.ReadOnly = true;
             Ncm.Width = 60;
             // 
+            // Column1
+            // 
+            Column1.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Column1.DataPropertyName = "Mensagem";
+            Column1.HeaderText = "Mensagem";
+            Column1.Name = "Column1";
+            Column1.ReadOnly = true;
+            Column1.Width = 91;
+            // 
             // ConsultaGtinForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -204,5 +214,6 @@
         private DataGridViewTextBoxColumn Gtin;
         private DataGridViewTextBoxColumn Cest;
         private DataGridViewTextBoxColumn Ncm;
+        private DataGridViewTextBoxColumn Column1;
     }
 }

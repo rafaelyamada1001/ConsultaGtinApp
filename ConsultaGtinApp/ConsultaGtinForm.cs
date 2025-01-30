@@ -87,19 +87,18 @@ namespace ConsultaGtinApp
             }
         }
 
-        private void btnExportarCSV_Click(object sender, EventArgs e)
+        private async void btnExportarCSV_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog dirDialog = new FolderBrowserDialog())
             {
-                // Mostra a janela de escolha do directorio
+
                 DialogResult res = dirDialog.ShowDialog();
-                if (res == DialogResult.OK)
-                {
-                    // Como o utilizador carregou no OK, o directorio escolhido pode ser acedido da seguinte forma:
-                    string directorio = dirDialog.SelectedPath;
-                    _exportarConsultaUseCase.Executar(_lista, directorio);
-                    MessageBox.Show("Exportação finalizada com sucesso!", "Sucesso!");
-                }
+                if (res != DialogResult.OK) { return; }
+
+                string directorio = dirDialog.SelectedPath;
+                await _exportarConsultaUseCase.ExecutarAsync(_lista, directorio);
+
+                MessageBox.Show("Exportação finalizada com sucesso!", "Sucesso!");
             }
         }
         private void AtualizarGrid()
