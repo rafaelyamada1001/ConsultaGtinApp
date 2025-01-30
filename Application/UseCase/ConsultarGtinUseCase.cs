@@ -39,14 +39,7 @@ namespace Application.UseCase
 
             var ret = response.Dados.ccgConsGTINResponse.nfeResultMsg.retConsGTIN;
 
-            return new GtinResult
-            {
-                Produto = ret.xProd,
-                NCM = ret.NCM,
-                CEST = ret.CEST,
-                GTIN = ret.GTIN,
-                Mensagem = ret.xMotivo
-            };
+            return new GtinResult(ret.GTIN, ret.xProd, ret.NCM, ret.CEST, ret.xMotivo);
         }
     }
 }

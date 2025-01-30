@@ -38,7 +38,6 @@ namespace ConsultaGtinApp
             services.AddTransient<ConsultarGtinUseCase>();
             services.AddTransient<ConsultarListaGtinUseCase>();
             services.AddTransient<ExportarConsultaUseCase>();
-            services.AddTransient<ProcessarGtinUseCase>();
 
             // Registro do formulário principal
             services.AddTransient<ConsultaGtinForm>();

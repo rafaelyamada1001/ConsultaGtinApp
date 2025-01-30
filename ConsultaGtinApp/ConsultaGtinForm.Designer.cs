@@ -28,13 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConsultaGtinForm));
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dgvConsultaGtin = new DataGridView();
-            Descricao = new DataGridViewTextBoxColumn();
-            Gtin = new DataGridViewTextBoxColumn();
-            Cest = new DataGridViewTextBoxColumn();
-            Ncm = new DataGridViewTextBoxColumn();
             btnConsultaGtin = new Button();
             lblConsultaGtin = new Label();
             pnlConsultaGtin = new Panel();
@@ -42,6 +38,10 @@
             txtConsultaGtin = new TextBox();
             btnExportarCSV = new Button();
             pictureBox1 = new PictureBox();
+            Descricao = new DataGridViewTextBoxColumn();
+            Gtin = new DataGridViewTextBoxColumn();
+            Cest = new DataGridViewTextBoxColumn();
+            Ncm = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvConsultaGtin).BeginInit();
             pnlConsultaGtin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -58,44 +58,6 @@
             dgvConsultaGtin.ReadOnly = true;
             dgvConsultaGtin.Size = new Size(810, 259);
             dgvConsultaGtin.TabIndex = 0;
-            // 
-            // Descricao
-            // 
-            Descricao.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            Descricao.DataPropertyName = "Produto";
-            Descricao.HeaderText = "Descrição";
-            Descricao.Name = "Descricao";
-            Descricao.ReadOnly = true;
-            Descricao.Width = 83;
-            // 
-            // Gtin
-            // 
-            Gtin.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            Gtin.DataPropertyName = "GTIN";
-            Gtin.HeaderText = "GTIN";
-            Gtin.Name = "Gtin";
-            Gtin.ReadOnly = true;
-            Gtin.Width = 58;
-            // 
-            // Cest
-            // 
-            Cest.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            Cest.DataPropertyName = "CEST";
-            Cest.HeaderText = "CEST";
-            Cest.Name = "Cest";
-            Cest.ReadOnly = true;
-            Cest.Width = 58;
-            // 
-            // Ncm
-            // 
-            Ncm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            Ncm.DataPropertyName = "NCM";
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            Ncm.DefaultCellStyle = dataGridViewCellStyle1;
-            Ncm.HeaderText = "NCM";
-            Ncm.Name = "Ncm";
-            Ncm.ReadOnly = true;
-            Ncm.Width = 60;
             // 
             // btnConsultaGtin
             // 
@@ -167,7 +129,45 @@
             pictureBox1.TabIndex = 4;
             pictureBox1.TabStop = false;
             // 
-            // CosultaGtinForm
+            // Descricao
+            // 
+            Descricao.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Descricao.DataPropertyName = "Produto";
+            Descricao.HeaderText = "Descrição";
+            Descricao.Name = "Descricao";
+            Descricao.ReadOnly = true;
+            Descricao.Width = 83;
+            // 
+            // Gtin
+            // 
+            Gtin.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Gtin.DataPropertyName = "GTIN";
+            Gtin.HeaderText = "GTIN";
+            Gtin.Name = "Gtin";
+            Gtin.ReadOnly = true;
+            Gtin.Width = 58;
+            // 
+            // Cest
+            // 
+            Cest.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Cest.DataPropertyName = "CEST";
+            Cest.HeaderText = "CEST";
+            Cest.Name = "Cest";
+            Cest.ReadOnly = true;
+            Cest.Width = 58;
+            // 
+            // Ncm
+            // 
+            Ncm.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Ncm.DataPropertyName = "NCM";
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            Ncm.DefaultCellStyle = dataGridViewCellStyle1;
+            Ncm.HeaderText = "NCM";
+            Ncm.Name = "Ncm";
+            Ncm.ReadOnly = true;
+            Ncm.Width = 60;
+            // 
+            // ConsultaGtinForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -178,7 +178,7 @@
             Controls.Add(pnlConsultaGtin);
             Controls.Add(dgvConsultaGtin);
             MaximizeBox = false;
-            Name = "CosultaGtinForm";
+            Name = "ConsultaGtinForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Consultar Gtin";
             Load += Form1_Load;
@@ -199,6 +199,7 @@
         private PictureBox pictureBox1;
         private Button btnImportCSV;
         private Button btnExportarCSV;
+        private DataGridViewTextBoxColumn Mensagem;
         private DataGridViewTextBoxColumn Descricao;
         private DataGridViewTextBoxColumn Gtin;
         private DataGridViewTextBoxColumn Cest;

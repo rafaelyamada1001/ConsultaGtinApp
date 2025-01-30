@@ -2,8 +2,6 @@ using Application.Interface;
 using Application.UseCase;
 using Domain;
 using Infra.Service;
-using Microsoft.VisualBasic;
-using System.Xml.XPath;
 
 
 namespace ConsultaGtinApp
@@ -14,16 +12,14 @@ namespace ConsultaGtinApp
         private readonly ConsultarListaGtinUseCase _consultarListaGtinUseCase;
         private readonly ICriarArquivoServico _criarArquivo = new ArquivoService();
         private readonly ExportarConsultaUseCase _exportarConsultaUseCase;
-        private readonly ProcessarGtinUseCase _processarGtin = new ProcessarGtinUseCase();
         private List<GtinResult> _lista;
 
-        public ConsultaGtinForm(ConsultarGtinUseCase consultarGtinUseCase, ConsultarListaGtinUseCase consultarListaGtinUseCase, ICriarArquivoServico criarArquivo, ExportarConsultaUseCase exportarConsultaUseCase, ProcessarGtinUseCase processarGtin)
+        public ConsultaGtinForm(ConsultarGtinUseCase consultarGtinUseCase, ConsultarListaGtinUseCase consultarListaGtinUseCase, ICriarArquivoServico criarArquivo, ExportarConsultaUseCase exportarConsultaUseCase)
         {
             _consultarGtinUseCase = consultarGtinUseCase;
             _consultarListaGtinUseCase = consultarListaGtinUseCase;
             _criarArquivo = criarArquivo;
             _exportarConsultaUseCase = exportarConsultaUseCase;
-            _processarGtin = processarGtin;
 
 
             _lista = new List<GtinResult>();
@@ -42,7 +38,7 @@ namespace ConsultaGtinApp
         {
 
         }
-        
+
         private bool HasGtinList(string gtin)
         {
             var hasGtin = from a in _lista where a.GTIN == gtin select a;
@@ -60,12 +56,12 @@ namespace ConsultaGtinApp
             }
 
             var result = await _consultarGtinUseCase.ExecuteIIAsync(gtin);
-            if (result.Produto == null) 
+            if (result.Produto == null)
             {
                 MessageBox.Show(result.Mensagem, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; 
+                return;
             }
-            
+
             _lista.Add(result);
 
             AtualizarGrid();
@@ -79,23 +75,15 @@ namespace ConsultaGtinApp
 
                 if (openFileDialog.ShowDialog() != DialogResult.OK) { return; }
 
-                try
-                {
-                    var gtins = File.ReadAllLines(openFileDialog.FileName);
-                    var responses = await _consultarListaGtinUseCase.Execute(gtins, maxSimultaneousTasks: 4);
-                    //var sucess = (from a in responses where a.Sucesso == true select a).ToList();
+                var gtins = File.ReadAllLines(openFileDialog.FileName);
 
-                    //foreach (var response in sucess)
-                    //    _lista.Add(_processarGtin.Execute(response));
+                var responses = await _consultarListaGtinUseCase.ExecuteAsync(gtins, maxSimultaneousTasks: 4);
 
-                    AtualizarGrid();
+                _lista.AddRange(responses);
 
-                    MessageBox.Show("Importação e consulta finalizadas com sucesso!", "Sucesso!");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erro ao importar o arquivo: {ex.Message}");
-                }
+                AtualizarGrid();
+
+                MessageBox.Show("Importação e consulta finalizadas com sucesso!", "Sucesso!");
             }
         }
 

@@ -6,42 +6,30 @@ namespace Application.UseCase
     public class ConsultarListaGtinUseCase
     {
         private readonly ConsultarGtinUseCase _consultarGtinUseCase;
- 
 
         public ConsultarListaGtinUseCase(ConsultarGtinUseCase consultarGtinUseCase)
         {
             _consultarGtinUseCase = consultarGtinUseCase;
-
         }
-        public async Task<List<ResponseDefault<retConsGTIN>>> Execute(IEnumerable<string> gtins, int maxSimultaneousTasks = 5)
+        public async Task<List<GtinResult>> ExecuteAsync(IEnumerable<string> gtins, int maxSimultaneousTasks = 5)
         {
             var semaphore = new SemaphoreSlim(maxSimultaneousTasks);
-            var tasks = new List<Task<ResponseDefault<retConsGTIN>>>();
+            var tasks = new List<Task<GtinResult>>();
 
             foreach (var gtin in gtins)
             {
-                await semaphore.WaitAsync();
-
                 tasks.Add(Task.Run(async () =>
                 {
-                    try
-                    {
-                        return await _consultarGtinUseCase.ExecuteAsync(gtin);
-                    }
-                    catch (Exception ex)
-                    {
-                        return new ResponseDefault<retConsGTIN>(false, $"Erro ao consultar GTIN {gtin}: {ex.Message}", null);
-                    }
-                    finally
-                    {
-                        semaphore.Release();
-                    }
+                    await semaphore.WaitAsync();
+                    var result = await _consultarGtinUseCase.ExecuteIIAsync(gtin);
+                    semaphore.Release();
+                    return result;
                 }));
             }
 
             var results = await Task.WhenAll(tasks);
 
-            return results.ToList();
+            return results.Where(r => r.Produto != null).ToList();
         }
     }
 }

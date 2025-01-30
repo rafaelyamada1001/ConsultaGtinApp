@@ -31,7 +31,7 @@ namespace Infra.Service
                     using (var client = new HttpClient(handler))
                     {
                         string envelope = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                        "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns=\"http://www.portalfiscal.inf.br/nfe/wsdl/ccgConsGtin\">" +
+                        "<ssoap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns=\"http://www.portalfiscal.inf.br/nfe/wsdl/ccgConsGtin\">" +
                         "<soap:Header/>" +
                         "<soap:Body>" +
                         "<ccgConsGTIN>" +
