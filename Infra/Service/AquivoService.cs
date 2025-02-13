@@ -19,7 +19,7 @@ namespace Infra.Service
 
                 var linhas = new List<string>
                 {
-                    "GTIN;Produto;NCM;CEST" // Cabeçalho do CSV
+                    "GTIN;Produto;NCM;CEST"
                 };
 
                 linhas.AddRange(conteudo.Select(item => $"{item.GTIN};{item.Produto};{item.NCM};{item.CEST}"));

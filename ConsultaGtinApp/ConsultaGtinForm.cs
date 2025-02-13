@@ -47,7 +47,7 @@ namespace ConsultaGtinApp
 
         private async void btnConsultaGtin_Click(object sender, EventArgs e)
         {
-            string gtin = txtConsultaGtin.Text;
+            string gtin = txtConsultaGtin.Text.TrimStart('0');
 
             if (HasGtinList(gtin))
             {
@@ -55,7 +55,7 @@ namespace ConsultaGtinApp
                 return;
             }
 
-            var result = await _consultarGtinUseCase.ExecuteIIAsync(gtin);
+            var result = await _consultarGtinUseCase.ExecuteAsync(gtin);
             if (result.Produto == null)
             {
                 MessageBox.Show(result.Mensagem, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);

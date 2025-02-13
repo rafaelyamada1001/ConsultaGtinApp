@@ -21,7 +21,7 @@ namespace Application.UseCase
                 tasks.Add(Task.Run(async () =>
                 {
                     await semaphore.WaitAsync();
-                    var result = await _consultarGtinUseCase.ExecuteIIAsync(gtin);
+                    var result = await _consultarGtinUseCase.ExecuteAsync(gtin);
                     semaphore.Release();
                     return result;
                 }));
