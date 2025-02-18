@@ -1,8 +1,10 @@
-﻿namespace Infra.Builder
+﻿using Application.Interface;
+
+namespace Infra.Builder
 {
-    public static class SoapEnvelopeBuilder
+    public class SoapEnvelopeBuilder : ISoapEnvelopeBuilder
     {
-        public static string CreateGtinEnvelope(string gtin)
+        public string CreateGtinEnvelope(string gtin )
         {
             return "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
                         "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns=\"http://www.portalfiscal.inf.br/nfe/wsdl/ccgConsGtin\">" +

@@ -1,7 +1,6 @@
 ﻿using Application.DTO;
 using Application.Interface;
 using Domain;
-using Infra.Builder;
 using Infra.Serializer;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -22,7 +21,7 @@ namespace Infra.Service
             _certificado = new X509Certificate2(certificadoCaminho, certificadoSenha);
         }
 
-        public async Task<ResponseDefault<EnvelopeBody>> ConsultarGtinAsync(string gtin)
+        public async Task<ResponseDefault<EnvelopeBody>> ConsultarGtinAsync(string gtin, string envelope)
         {
             try
             {
@@ -31,7 +30,7 @@ namespace Infra.Service
                     handler.ClientCertificates.Add(_certificado);
                     using (var client = new HttpClient(handler))
                     {
-                        string envelope = SoapEnvelopeBuilder.CreateGtinEnvelope(gtin);
+                        //string envelope = SoapEnvelopeBuilder.CreateGtinEnvelope(gtin);
                         var content = new StringContent(envelope, Encoding.UTF8, "text/xml");
                         content.Headers.Add("SOAPAction", _soapAction);
 

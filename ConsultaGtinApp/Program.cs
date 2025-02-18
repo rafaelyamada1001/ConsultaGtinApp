@@ -1,5 +1,6 @@
 using Application.Interface;
 using Application.UseCase;
+using Infra.Builder;
 using Infra.Service;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,6 +36,7 @@ namespace ConsultaGtinApp
             // Injetando as implementações e casos de uso
             services.AddTransient<ICriarArquivoServico, ArquivoService>();
             services.AddTransient<IConsGtinService>(provider => new ConsGtinService(url, soapAction, certificadoCaminho, certificadoSenha));
+            services.AddTransient<ISoapEnvelopeBuilder, SoapEnvelopeBuilder>();
             services.AddTransient<ConsultarGtinUseCase>();
             services.AddTransient<ConsultarListaGtinUseCase>();
             services.AddTransient<ExportarConsultaUseCase>();

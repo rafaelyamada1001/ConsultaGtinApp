@@ -10,15 +10,15 @@ namespace ConsultaGtinApp
     {
         private readonly ConsultarGtinUseCase _consultarGtinUseCase;
         private readonly ConsultarListaGtinUseCase _consultarListaGtinUseCase;
-        private readonly ICriarArquivoServico _criarArquivo = new ArquivoService();
+        //private readonly ICriarArquivoServico _criarArquivo = new ArquivoService();
         private readonly ExportarConsultaUseCase _exportarConsultaUseCase;
         private List<GtinResult> _lista;
 
-        public ConsultaGtinForm(ConsultarGtinUseCase consultarGtinUseCase, ConsultarListaGtinUseCase consultarListaGtinUseCase, ICriarArquivoServico criarArquivo, ExportarConsultaUseCase exportarConsultaUseCase)
+        public ConsultaGtinForm(ConsultarGtinUseCase consultarGtinUseCase, ConsultarListaGtinUseCase consultarListaGtinUseCase, ExportarConsultaUseCase exportarConsultaUseCase)
         {
             _consultarGtinUseCase = consultarGtinUseCase;
             _consultarListaGtinUseCase = consultarListaGtinUseCase;
-            _criarArquivo = criarArquivo;
+            //_criarArquivo = criarArquivo;
             _exportarConsultaUseCase = exportarConsultaUseCase;
 
 
